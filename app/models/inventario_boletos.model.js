@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: "partidos",   // nombre de la tabla referenciada
+        model: "partidos",   
         key: "id_partido"
       }
     },
@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: "localidades", // nombre de la tabla referenciada
+        model: "localidades", 
         key: "id_localidad"
       }
     },

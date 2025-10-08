@@ -22,6 +22,5 @@ module.exports = app => {
   // Eliminar todas las Ventas
   router.delete("/delete/", venta.deleteAll);
 
-  // Ejemplo: http://localhost:PUERTO/api/ventas/
   app.use("/api/ventas", router);
 };

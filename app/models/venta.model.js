@@ -18,8 +18,8 @@ module.exports = (sequelize, Sequelize) => {
         onDelete: "RESTRICT"
       },
       fecha_venta: {
-        type: Sequelize.DATE,     // TIMESTAMP
-        defaultValue: Sequelize.NOW // DEFAULT NOW()
+        type: Sequelize.DATE,     
+        defaultValue: Sequelize.NOW 
       },
       total_venta: {
         type: Sequelize.DECIMAL(10, 2),
@@ -27,10 +27,10 @@ module.exports = (sequelize, Sequelize) => {
       }
     },
     {
-      tableName: "ventas",        // coincide con el nombre de la tabla del diseño
-      timestamps: false,          // si no usarás createdAt/updatedAt
+      tableName: "ventas",        
+      timestamps: false,         
       indexes: [
-        { fields: ["id_vendedor"] } // útil para consultas por vendedor
+        { fields: ["id_vendedor"] } 
       ]
     }
   );

@@ -1,4 +1,4 @@
-// routes/inventario.routes.js
+
 module.exports = app => {
   const inventario = require("../controllers/inventario.controller.js");
 
@@ -23,6 +23,5 @@ module.exports = app => {
   router.delete("/delete/", inventario.deleteAll);
 
 
-  // Ejemplo: http://localhost:PUERTO/api/inventarios/
   app.use("/api/inventarios", router);
 };

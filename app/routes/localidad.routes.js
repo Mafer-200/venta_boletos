@@ -1,4 +1,4 @@
-// routes/localidad.routes.js
+
 module.exports = app => {
   const localidad = require("../controllers/localidad.controller.js");
 
@@ -22,6 +22,5 @@ module.exports = app => {
   // Eliminar todas las Localidades
   router.delete("/delete/", localidad.deleteAll);
 
-  // Ejemplo: http://localhost:PUERTO/api/localidades/
   app.use("/api/localidades", router);
 };

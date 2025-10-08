@@ -1,7 +1,6 @@
-// Utilizamos module.exports para exportar objetos para que puedan ser utilizados en otras clases
+
 module.exports = (sequelize, Sequelize) => {
-    // usamos el sequelize.define para "definir" el nombre de la entidad en la BD, en este caso "usuario"
-    // Usamos type.Sequelize para definir el tipo de datos de cada atributo de la entidad 
+
     const usuario = sequelize.define("usuario", {
         id_usuario: {
             type: Sequelize.INTEGER,
