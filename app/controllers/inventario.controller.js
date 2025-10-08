@@ -3,9 +3,9 @@ const db = require("../models");
 const Inventario = db.inventario_boletos; 
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Inventario
+
 exports.create = (req, res) => {
-  // Validamos que dentro del request no venga vacío alguno de los campos obligatorios
+  
   if (!req.body.id_partido || !req.body.id_localidad || !req.body.cantidad_total) {
     res.status(400).send({
       message: "Los campos id_partido, id_localidad y cantidad_total son obligatorios!"
@@ -13,12 +13,12 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Si no mandan cantidad_disponible, por defecto será igual a cantidad_total
+  
   const disponible = req.body.cantidad_disponible != null 
     ? req.body.cantidad_disponible 
     : req.body.cantidad_total;
 
-  // Create un nuevo Inventario, definiendo una variable con la estructura del request
+  
   const payload = {
     id_partido: req.body.id_partido,
     id_localidad: req.body.id_localidad,
@@ -26,7 +26,7 @@ exports.create = (req, res) => {
     cantidad_disponible: disponible
   };
 
-  // Save a new Inventario into the database
+  
   Inventario.create(payload)
     .then(data => {
       res.send(data);
@@ -38,7 +38,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Inventarios from the database. (filtro opcional por id_partido o id_localidad)
+
 exports.findAll = (req, res) => {
   const id_partido = req.query.id_partido;
   const id_localidad = req.query.id_localidad;
@@ -64,7 +64,7 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single Inventario by id
+
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -85,7 +85,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update an Inventario by the id in the request
+
 exports.update = (req, res) => {
   const id = req.params.id;
 
@@ -108,11 +108,11 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete an Inventario with the specified id in the request
+
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  // utilizamos el método destroy para eliminar el objeto; mandamos la condicionante where id = parámetro que recibimos
+  
   Inventario.destroy({ where: { id_inventario: id } })
     .then(num => {
       if (num == 1) {
@@ -132,7 +132,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Inventarios from the database.
+
 exports.deleteAll = (req, res) => {
   Inventario.destroy({ where: {}, truncate: false })
     .then(nums => {

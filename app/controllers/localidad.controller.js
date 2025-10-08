@@ -1,13 +1,10 @@
-// controllers/localidad.controller.js
-
-// importamos db y los modelos; si tenemos uno o más, se puede referenciar db."nombreModelo".
 const db = require("../models");
 const Localidad = db.localidades;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Localidad
+
 exports.create = (req, res) => {
-  // Validamos que dentro del request no vengan vacíos los campos requeridos
+  
   if (!req.body.nombre) {
     res.status(400).send({
       message: "El nombre es obligatorio (nombre no puede estar vacío)!"
@@ -21,24 +18,24 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Localidad, definiendo una variable con la estructura del request
+  
   const payload = {
     nombre: req.body.nombre,
     precio: req.body.precio // DECIMAL(10,2)
   };
 
-  // Save a new Localidad into the database
+  
   Localidad.create(payload)
     .then(data => res.send(data))
     .catch(err => {
-      // si hay violación de UNIQUE en 'nombre' o cualquier otro error
+      
       res.status(500).send({
         message: err.message || "Ocurrió un error al crear la Localidad."
       });
     });
 };
 
-// Retrieve all Localidades from the database. (filtro opcional por nombre)
+
 exports.findAll = (req, res) => {
   const nombre = req.query.nombre;
   const condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
@@ -52,9 +49,9 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single Localidad by id_localidad
+
 exports.findOne = (req, res) => {
-  const id = req.params.id; // esperamos id_localidad en la URL
+  const id = req.params.id; 
 
   Localidad.findByPk(id)
     .then(data => {
@@ -73,7 +70,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a Localidad by the id in the request
+
 exports.update = (req, res) => {
   const id = req.params.id;
 
@@ -94,11 +91,11 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Localidad with the specified id in the request
+
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  // utilizamos el método destroy para eliminar el objeto; mandamos la condicionante where id_localidad = parámetro que recibimos
+  
   Localidad.destroy({ where: { id_localidad: id } })
     .then(num => {
       if (num === 1) {
@@ -116,7 +113,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Localidades from the database.
+
 exports.deleteAll = (req, res) => {
   Localidad.destroy({ where: {}, truncate: false })
     .then(nums => {

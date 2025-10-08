@@ -1,12 +1,10 @@
 
 const db = require("../models");
-// Nota: ajusta a db.detalle_venta o db.detalle_ventas según cómo lo exportes en models/index.js
 const DetalleVenta = db.detalle_ventas; 
 const Op = db.Sequelize.Op;
 
-// Create and Save a new DetalleVenta
 exports.create = (req, res) => {
-  // Validamos que dentro del request no vengan vacíos los campos obligatorios
+  
   const required = ["id_venta", "id_localidad", "id_partido", "cantidad", "precio_unitario"];
   const missing = required.filter(k => req.body[k] === undefined || req.body[k] === null || req.body[k] === "");
   if (missing.length > 0) {
@@ -16,7 +14,7 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create un DetalleVenta, definiendo una variable con la estructura del request
+  
   const payload = {
     id_venta: req.body.id_venta,
     id_localidad: req.body.id_localidad,
@@ -25,7 +23,7 @@ exports.create = (req, res) => {
     precio_unitario: req.body.precio_unitario
   };
 
-  // Save a new DetalleVenta into the database
+  
   DetalleVenta.create(payload)
     .then(data => res.send(data))
     .catch(err => {
@@ -34,8 +32,6 @@ exports.create = (req, res) => {
       });
     });
 };
-
-// Retrieve all DetalleVenta from the database. (filtro opcional por id_venta)
 exports.findAll = (req, res) => {
   const id_venta = req.query.id_venta;
   const condition = id_venta ? { id_venta: { [Op.eq]: id_venta } } : null;
@@ -49,9 +45,9 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single DetalleVenta by id_detalle
+
 exports.findOne = (req, res) => {
-  const id = req.params.id; // corresponde a id_detalle
+  const id = req.params.id; 
 
   DetalleVenta.findByPk(id)
     .then(data => {
@@ -70,7 +66,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a DetalleVenta by the id in the request
+
 exports.update = (req, res) => {
   const id = req.params.id; // id_detalle
 
@@ -91,11 +87,11 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a DetalleVenta with the specified id in the request
+
 exports.delete = (req, res) => {
   const id = req.params.id; // id_detalle
 
-  // utilizamos el método destroy para eliminar el objeto; mandamos la condicionante where id_detalle = parámetro que recibimos
+  
   DetalleVenta.destroy({ where: { id_detalle: id } })
     .then(num => {
       if (num == 1) {
@@ -113,7 +109,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all DetalleVenta from the database.
+
 exports.deleteAll = (req, res) => {
   DetalleVenta.destroy({ where: {}, truncate: false })
     .then(nums => {

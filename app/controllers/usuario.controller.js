@@ -1,4 +1,4 @@
-// controllers/usuario.controller.js
+
 const db = require("../models");
 const Usuario = db.usuarios; 
 const Op = db.Sequelize.Op;
@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const ROLES_PERMITIDOS = ["administrador", "vendedor"];
 const SALT_ROUNDS = 10;
 
-// helper: limpia el objeto para no exponer contrasena_hash
+
 function sanitize(userInstance) {
   if (!userInstance) return userInstance;
   const json = userInstance.toJSON ? userInstance.toJSON() : userInstance;
@@ -15,12 +15,12 @@ function sanitize(userInstance) {
   return safe;
 }
 
-// Create and Save a new Usuario
+
 exports.create = async (req, res) => {
   try {
     const { nombre_usuario, contrasena, nombre_completo, rol } = req.body;
 
-    // Validaciones mínimas
+    
     if (!nombre_usuario || !contrasena || !nombre_completo || !rol) {
       return res.status(400).send({ message: "Faltan campos requeridos." });
     }
@@ -28,7 +28,7 @@ exports.create = async (req, res) => {
       return res.status(400).send({ message: "Rol inválido." });
     }
 
-    // Hash de contraseña
+    
     const contrasena_hash = await bcrypt.hash(contrasena, SALT_ROUNDS);
 
     const nuevo = await Usuario.create({
@@ -36,12 +36,12 @@ exports.create = async (req, res) => {
       contrasena_hash,
       nombre_completo,
       rol,
-      // fecha_creacion lo pone la DB con DEFAULT NOW()
+      
     });
 
     return res.status(201).send(sanitize(nuevo));
   } catch (err) {
-    // manejo de UNIQUE en nombre_usuario (Postgres/Sequelize)
+    
     if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(409).send({ message: "El nombre de usuario ya existe." });
     }
@@ -51,7 +51,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// Retrieve all Usuarios (opcional: filtrar por nombre_usuario con ?q= )
+
 exports.findAll = async (req, res) => {
   try {
     const q = req.query.q;
@@ -66,7 +66,7 @@ exports.findAll = async (req, res) => {
   }
 };
 
-// Find one by ID
+
 exports.findOne = async (req, res) => {
   try {
     const id = req.params.id;
@@ -82,7 +82,7 @@ exports.findOne = async (req, res) => {
   }
 };
 
-// (Opcional) Find one by nombre_usuario
+
 exports.findByUsername = async (req, res) => {
   try {
     const username = req.params.username;
@@ -100,7 +100,7 @@ exports.findByUsername = async (req, res) => {
   }
 };
 
-// Update by ID (si viene 'contrasena', se vuelve a hashear)
+
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
@@ -124,7 +124,7 @@ exports.update = async (req, res) => {
     const actualizado = await Usuario.findByPk(id);
     return res.send({ message: "Usuario actualizado correctamente.", data: sanitize(actualizado) });
   } catch (err) {
-    // posible conflicto por UNIQUE en nombre_usuario
+    
     if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(409).send({ message: "El nombre de usuario ya existe." });
     }
@@ -134,7 +134,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// Delete by ID
+
 exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
@@ -152,7 +152,7 @@ exports.delete = async (req, res) => {
   }
 };
 
-// Delete all (¡cuidado!)
+
 exports.deleteAll = async (_req, res) => {
   try {
     const nums = await Usuario.destroy({ where: {}, truncate: false });
@@ -164,7 +164,7 @@ exports.deleteAll = async (_req, res) => {
   }
 };
 
-// Listar por rol (similar a findAllStatus del ejemplo)
+
 exports.findAllByRol = async (req, res) => {
   try {
     const rol = req.params.rol;
@@ -180,7 +180,7 @@ exports.findAllByRol = async (req, res) => {
   }
 };
 
-// (Opcional) Autenticación básica: verifica usuario + contraseña
+
 exports.login = async (req, res) => {
   try {
     const { nombre_usuario, contrasena } = req.body;
@@ -193,7 +193,7 @@ exports.login = async (req, res) => {
     const ok = await bcrypt.compare(contrasena, usuario.contrasena_hash);
     if (!ok) return res.status(401).send({ message: "Credenciales inválidas." });
 
-    // aquí podrías firmar un JWT si lo usas; por ahora devolvemos datos no sensibles
+    
     return res.send({ message: "Login exitoso.", usuario: sanitize(usuario) });
   } catch (err) {
     return res.status(500).send({ message: "Error en login." });
