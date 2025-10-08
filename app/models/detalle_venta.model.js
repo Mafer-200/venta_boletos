@@ -54,8 +54,8 @@ module.exports = (sequelize, Sequelize) => {
       }
     },
     {
-      tableName: "detalle_ventas", // coincide con el diseño
-      timestamps: false,           // sin createdAt/updatedAt
+      tableName: "detalle_ventas", 
+      timestamps: false,           
       indexes: [
         { fields: ["id_venta"] },
         { fields: ["id_localidad"] },
