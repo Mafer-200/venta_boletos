@@ -106,14 +106,20 @@ exports.update = async (req, res) => {
     const id = req.params.id;
     const payload = { ...req.body };
 
+    // ✅ Normalizar el rol y validar
+    if (payload.rol) payload.rol = String(payload.rol).toLowerCase();
     if (payload.rol && !ROLES_PERMITIDOS.includes(payload.rol)) {
       return res.status(400).send({ message: "Rol inválido." });
     }
 
+    // ✅ Si viene contraseña, generar hash
     if (payload.contrasena) {
       payload.contrasena_hash = await bcrypt.hash(payload.contrasena, SALT_ROUNDS);
       delete payload.contrasena;
     }
+
+    // ✅ Evitar que intenten cambiar el id
+    delete payload.id_usuario;
 
     const [num] = await Usuario.update(payload, { where: { id_usuario: id } });
     if (num !== 1) {
@@ -121,10 +127,10 @@ exports.update = async (req, res) => {
         message: `No se pudo actualizar usuario id=${id}. ¿Existe o body vacío?`,
       });
     }
+
     const actualizado = await Usuario.findByPk(id);
     return res.send({ message: "Usuario actualizado correctamente.", data: sanitize(actualizado) });
   } catch (err) {
-    
     if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(409).send({ message: "El nombre de usuario ya existe." });
     }
@@ -133,6 +139,7 @@ exports.update = async (req, res) => {
       .send({ message: "Error actualizando usuario id=" + req.params.id });
   }
 };
+
 
 
 exports.delete = async (req, res) => {
